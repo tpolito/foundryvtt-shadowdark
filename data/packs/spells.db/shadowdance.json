@@ -1,0 +1,18 @@
+{
+	"id": "F2YlC54m4ScH",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "SHADOWDANCE",
+	"system": {
+		"class": ["witch"],
+		"description": "<p>You spin shadowstuff into a convincing visible and audible illusion at a point within near. The illusion can be as big as a person and can move within a near range of where it appeared. The illusion can't affect physical objects. Touching the illusion reveals its false nature.</p>",
+		"duration": { "type": "rounds", "value": "3" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "near",
+		"tier": 1
+	},
+	"type": "Spell"
+}

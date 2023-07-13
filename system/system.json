@@ -1,6 +1,6 @@
 {
-	"id": "shadowdark",
-	"title": "Shadowdark RPG",
+	"id": "shadowdark-dev",
+	"title": "Shadowdark RPG (DEV)",
 	"desciption": "A system for playing the Shadowdark RPG from Arcane Library",
 	"version": "1.3.7",
 	"compatibility": {
@@ -69,7 +69,7 @@
 		{
 			"name": "armor",
 			"label": "Armor",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/armor.db",
 			"type": "Item",
 			"private": false,
@@ -78,7 +78,7 @@
 		{
 			"name": "basic-gear",
 			"label": "Basic Gear",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/basic-gear.db",
 			"type": "Item",
 			"private": false,
@@ -87,7 +87,7 @@
 		{
 			"name": "conditions",
 			"label": "Conditions",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/conditions.db",
 			"type": "Item",
 			"private": false,
@@ -96,7 +96,7 @@
 		{
 			"name": "macros",
 			"label": "Macros",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/macros.db",
 			"type": "Macro",
 			"private": false,
@@ -105,7 +105,7 @@
 		{
 			"name": "magic-items",
 			"label": "Magic Items",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/magic-items.db",
 			"type": "Item",
 			"private": false,
@@ -114,7 +114,7 @@
 		{
 			"name": "monster",
 			"label": "Monster",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/monster.db",
 			"type": "Actor",
 			"private": false,
@@ -123,7 +123,7 @@
 		{
 			"name": "quickstart-guide",
 			"label": "Quickstart Guide",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/quickstart-guide.db",
 			"type": "JournalEntry",
 			"private": false,
@@ -132,7 +132,7 @@
 		{
 			"name": "quickstart-pregens",
 			"label": "Quickstart Pregens",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/quickstart-pregens.db",
 			"type": "Actor",
 			"private": false,
@@ -141,7 +141,7 @@
 		{
 			"name": "spells",
 			"label": "Spells",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/spells.db",
 			"type": "Item",
 			"private": false,
@@ -150,7 +150,7 @@
 		{
 			"name": "spell-effects",
 			"label": "Spell Effects",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/spell-effects.db",
 			"type": "Item",
 			"private": false,
@@ -159,7 +159,7 @@
 		{
 			"name": "rollable-tables",
 			"label": "Rollable Tables",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/rollable-tables.db",
 			"type": "RollTable",
 			"private": false,
@@ -168,7 +168,7 @@
 		{
 			"name": "talents",
 			"label": "Talents",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/talents.db",
 			"type": "Item",
 			"private": false,
@@ -177,7 +177,7 @@
 		{
 			"name": "the-lost-citadel",
 			"label": "The Lost Citadel",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/the-lost-citadel.db",
 			"type": "JournalEntry",
 			"private": false,
@@ -186,7 +186,7 @@
 		{
 			"name": "the-lost-citadel-adventure",
 			"label": "The Lost Citadel: Adventure",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/the-lost-citadel-adventure.db",
 			"type": "Adventure",
 			"private": false,
@@ -195,7 +195,7 @@
 		{
 			"name": "weapons",
 			"label": "Weapons",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/weapons.db",
 			"type": "Item",
 			"private": false,
@@ -204,7 +204,7 @@
 		{
 			"name": "wizard-mishap",
 			"label": "Wizard Mishap",
-			"system": "shadowdark",
+			"system": "shadowdark-dev",
 			"path": "packs/wizard-mishap.db",
 			"type": "RollTable",
 			"private": false,

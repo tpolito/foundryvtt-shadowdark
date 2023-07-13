@@ -1,0 +1,18 @@
+{
+	"id": "TzZWoaZAZfb6",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "BOGBOIL",
+	"system": {
+		"class": ["witch"],
+		"description": "<p>You turn a near-sized cube of ground within range into a muddy, boiling bog of quicksand. A creature stuck in the bog can’t move and must succeed on a Dexterity check vs. your spellcasting check to free itself.</p>",
+		"duration": { "type": "rounds", "value": "5" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "far",
+		"tier": 2
+	},
+	"type": "Spell"
+}

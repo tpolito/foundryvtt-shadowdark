@@ -1,0 +1,1 @@
+{"id":"jgNLnEYuA4sQ","effects":[],"img":"/icon/magic/perception/eye-slit-pink.webp","name":"DISPEL MAGIC","system":{"class":["wizard"],"description":"<p>End one spell that affects one target you can see in range.</p>","duration":{"type":"instant","value":""},"lost":false,"magicItem":false,"predefinedEffects":false,"properties":[],"range":"near","tier":3},"type":"Spell"}

@@ -1,0 +1,18 @@
+{
+	"id": "Wr5HtRaZTpBx",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "EVOKE RAGE",
+	"system": {
+		"class": ["seer"],
+		"description": "<p>You call out the berserk rage locked inside someone. One willing humanoid you touch enters a berserk state. The target is immune to morale checks, has advantage on strength checks and melee attacks, and deals +1d4 damage for the spell's duration. If the target does not attack another creature on its turn, the spell ends.</p>",
+		"duration": { "type": "rounds", "value": "1d4" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "close",
+		"tier": 1
+	},
+	"type": "Spell"
+}

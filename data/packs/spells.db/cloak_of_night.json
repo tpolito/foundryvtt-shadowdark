@@ -1,0 +1,18 @@
+{
+	"id": "DEXNK5Ae3rMR",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "CLOAK OF NIGHT",
+	"system": {
+		"class": ["witch"],
+		"description": "<p>Your wrap yourself in a swirling cloak of shadows. For the spell's duration, your armor class becomes 17 (20 on a critical spellcasting check). You have advantage on Dexterity checks to sneak and hide for the spell's duration.</p>",
+		"duration": { "type": "rounds", "value": "8" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "self",
+		"tier": 4
+	},
+	"type": "Spell"
+}

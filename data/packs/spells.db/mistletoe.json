@@ -1,0 +1,18 @@
+{
+	"id": "WeEcKPgTzt7V",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "MISTLETOE",
+	"system": {
+		"class": ["witch"],
+		"description": "<p>Two creatures you can see within near of you become enchanted with each other for 1d8 days. Each time one of the affected creatures takes damage, it may make a DC 15 Charisma check. On a success, the spell ends.</p>",
+		"duration": { "type": "days", "value": "1d8" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "near",
+		"tier": 3
+	},
+	"type": "Spell"
+}

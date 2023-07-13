@@ -1,0 +1,1 @@
+{"id":"NoNVOSV3cdmR","effects":[],"img":"/icon/magic/perception/eye-slit-pink.webp","name":"MASS CURE","system":{"class":["priest"],"description":"<p>All allies within near range of you regain 2d6 hit points.</p>","duration":{"type":"instant","value":""},"lost":false,"magicItem":false,"predefinedEffects":false,"properties":[],"range":"near","tier":3},"type":"Spell"}

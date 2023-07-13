@@ -1,0 +1,18 @@
+{
+	"id": "TSSrSMSU8fLU",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "DIVINE VENGEANCE",
+	"system": {
+		"class": ["priest"],
+		"description": "<p>You become the divine avatar of your god's wrath, wreathed in holy flames or a black aura of smoldering corruption. For the spell's duration, you can fly a near distance, your weapons are magical, and you have a +4 bonus to your weapon attacks and damage.</p>",
+		"duration": { "type": "rounds", "value": "10" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "self",
+		"tier": 5
+	},
+	"type": "Spell"
+}

@@ -1,0 +1,18 @@
+{
+	"id": "ETwcvw1LTeWq",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "VALKYRIE",
+	"system": {
+		"class": ["seer"],
+		"description": "<p>You summon a valkyrie to your aid. She appears in a location within near and acts of her own free will to help you. She returns to Valhalla when the spell ends. You can't cast this again until you complete penance.</p>",
+		"duration": { "type": "rounds", "value": "10" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "near",
+		"tier": 5
+	},
+	"type": "Spell"
+}

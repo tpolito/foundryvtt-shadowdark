@@ -1,0 +1,18 @@
+{
+	"id": "BAUSy6q7KES6",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "FLY",
+	"system": {
+		"class": ["wizard"],
+		"description": "<p>Your feet lift from the ground, and you take to the air like a hummingbird. You can fly near for the spell's duration and are able to hover in place.</p>",
+		"duration": { "type": "rounds", "value": "5" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "self",
+		"tier": 3
+	},
+	"type": "Spell"
+}

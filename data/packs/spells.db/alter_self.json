@@ -1,23 +1,16 @@
 {
-	"_id": "ojJm3ByDjjHefy2u",
-	"effects": [
-	],
-	"img": "icons/magic/control/energy-stream-link-spiral-orange.webp",
-	"name": "Alter Self",
+	"id": "B48jrEEXfLXw",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "ALTER SELF",
 	"system": {
-		"class": [
-			"wizard"
-		],
-		"description": "<p>You magically change your physical form, gaining one feature that modifies your existing anatomy.</p><p></p><p>For example, you can grow functional gills on your neck or bear claws on your fingers. This spell can’t grow wings or limbs.</p><p></p><p>@UUID[Compendium.shadowdark.spell-effects.f2RsbovyTLEZvxuF]{Spell Effect: Alter Self}</p>",
-		"duration": {
-			"type": "rounds",
-			"value": "5"
-		},
+		"class": ["wizard"],
+		"description": "<p>You magically change your physical form, gaining one feature that modifies your existing anatomy. For example, you can grow functional gills on your neck or bear claws on your fingers. This spell can’t grow wings or limbs.</p>",
+		"duration": { "type": "rounds", "value": "5" },
 		"lost": false,
 		"magicItem": false,
-		"predefinedEffects": "",
-		"properties": [
-		],
+		"predefinedEffects": false,
+		"properties": [],
 		"range": "self",
 		"tier": 2
 	},

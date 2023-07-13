@@ -1,0 +1,18 @@
+{
+	"id": "CARlEprxG1L6",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "POISON",
+	"system": {
+		"class": ["witch"],
+		"description": "<p>One worn or carried object you touch becomes toxic for the spell's duration. Any creature in contact with the object at the start of its turn takes 1d6 damage.</p>",
+		"duration": { "type": "rounds", "value": "5" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "close",
+		"tier": 2
+	},
+	"type": "Spell"
+}

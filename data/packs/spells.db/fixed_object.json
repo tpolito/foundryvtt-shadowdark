@@ -1,20 +1,16 @@
 {
-	"_id": "oeJmT9gfvZ5Ha19w",
-	"effects": [
-	],
-	"img": "icons/magic/earth/strike-fist-stone-gray.webp",
-	"name": "Fixed Object",
+	"id": "WY5x4jBY67Ib",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "FIXED OBJECT",
 	"system": {
-		"class": [
-			"wizard"
-		],
+		"class": ["wizard"],
 		"description": "<p>An object you touch that weighs no more than 5 pounds becomes fixed in its current location. It can support up to 5,000 pounds of weight for the duration of the spell.</p>",
-		"duration": {
-			"type": "rounds",
-			"value": "5"
-		},
-		"properties": [
-		],
+		"duration": { "type": "rounds", "value": "5" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
 		"range": "close",
 		"tier": 2
 	},

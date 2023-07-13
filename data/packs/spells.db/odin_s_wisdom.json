@@ -1,0 +1,18 @@
+{
+	"id": "n7vvzO5edhWx",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "ODIN'S WISDOM",
+	"system": {
+		"class": ["seer"],
+		"description": "<p>For the spell's duration, add your level as an additional bonus to your Wisdom checks and spellcasting checks.</p>",
+		"duration": { "type": "rounds", "value": "1d6" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "self",
+		"tier": 4
+	},
+	"type": "Spell"
+}

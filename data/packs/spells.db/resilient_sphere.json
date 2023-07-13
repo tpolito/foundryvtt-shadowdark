@@ -1,0 +1,18 @@
+{
+	"id": "VmDeqnhrbdI1",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "RESILIENT SPHERE",
+	"system": {
+		"class": ["wizard"],
+		"description": "<p>You conjure a weightless, glassy sphere around you that extends out to close range. For the spell's duration, nothing can pass through or crush the sphere. You can roll the sphere a near distance on your turn.</p>",
+		"duration": { "type": "rounds", "value": "5" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "close",
+		"tier": 4
+	},
+	"type": "Spell"
+}

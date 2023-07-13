@@ -1,0 +1,18 @@
+{
+	"id": "aebLt9VCaOHt",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "PASSWALL",
+	"system": {
+		"class": ["wizard"],
+		"description": "<p>A tunnel of your height opens in a barrier you touch and lasts for the duration. The passage can be up to near distance in length and must be in a straight line.</p>",
+		"duration": { "type": "rounds", "value": "5" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "close",
+		"tier": 4
+	},
+	"type": "Spell"
+}

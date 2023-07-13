@@ -1,23 +1,16 @@
 {
-	"_id": "3nOduBggYvyIPykI",
-	"effects": [
-	],
-	"img": "icons/commodities/metal/plate-steel-pink.webp",
-	"name": "Floating Disk",
+	"id": "W5V3650ijhz5",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "FLOATING DISK",
 	"system": {
-		"class": [
-			"wizard"
-		],
-		"description": "<p>You create a floating, circular disk of force with a concave center. It can carry up to 20 gear slots. It hovers at waist level and automatically stays within near of you. It can’t cross over drop- offs or pits taller than a human.</p><p></p><p>@UUID[Compendium.shadowdark.spell-effects.VMkeCfccn7zp2up7]{Spell Effect: Floating Disk}</p>",
-		"duration": {
-			"type": "rounds",
-			"value": "10"
-		},
+		"class": ["wizard"],
+		"description": "<p>You create a floating, circular disk of force with a concave center. It can carry up to 20 gear slots. It hovers at waist level and automatically stays within near of you. It can’t cross over drop-offs or pits taller than a human.</p>",
+		"duration": { "type": "rounds", "value": "10" },
 		"lost": false,
 		"magicItem": false,
-		"predefinedEffects": "",
-		"properties": [
-		],
+		"predefinedEffects": false,
+		"properties": [],
 		"range": "near",
 		"tier": 1
 	},

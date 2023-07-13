@@ -1,23 +1,16 @@
 {
-	"_id": "PZ0qPp6lG9SVMoAr",
-	"effects": [
-	],
-	"img": "icons/magic/light/explosion-star-glow-silhouette.webp",
-	"name": "Invisibility",
+	"id": "NHHFMbbhdYDH",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "INVISIBILITY",
 	"system": {
-		"class": [
-			"wizard"
-		],
-		"description": "<p>A creature you touch becomes invisible for the spell’s duration.</p><p>The spell ends if the target attacks or casts a spell.</p><p>@UUID[Compendium.shadowdark.spell-effects.SMXbMbXcj5hLvTjY]{Spell Effect: Invisibility}</p>",
-		"duration": {
-			"type": "rounds",
-			"value": "10"
-		},
+		"class": ["wizard"],
+		"description": "<p>A creature you touch becomes invisible for the spell’s duration. The spell ends if the target attacks or casts a spell.</p>",
+		"duration": { "type": "rounds", "value": "10" },
 		"lost": false,
 		"magicItem": false,
-		"predefinedEffects": "",
-		"properties": [
-		],
+		"predefinedEffects": false,
+		"properties": [],
 		"range": "close",
 		"tier": 2
 	},

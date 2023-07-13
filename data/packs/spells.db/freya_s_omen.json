@@ -1,0 +1,18 @@
+{
+	"id": "fxAebDdi6fBL",
+	"effects": [],
+	"img": "/icon/magic/perception/eye-slit-pink.webp",
+	"name": "FREYA'S OMEN",
+	"system": {
+		"class": ["seer"],
+		"description": "<p>For the spell's duration, you do not lose the ability to cast a spell if you fail its spellcasting check. If you critically fail a spellcasting check, you may reroll your check once. You must use the new result.</p>",
+		"duration": { "type": "rounds", "value": "1d6" },
+		"lost": false,
+		"magicItem": false,
+		"predefinedEffects": false,
+		"properties": [],
+		"range": "self",
+		"tier": 4
+	},
+	"type": "Spell"
+}
