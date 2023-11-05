@@ -1,5 +1,144 @@
 ## v.1.x.x
 
+### Bugfixes
+* [#573] Fixed an issue with item attack bonuses not being calculated if added manually via the roll dialog.
+
+### Enhancements
+* [#220] Added ability to drag attacks, spells, abilities, potions, and light sources to the Hotbar.
+
+## v.1.5.1
+
+### Bugfixes
+* [#560] More fixes to Tours (Lightsource Tracking, The Lost Citadel and Importing Monsters) (Prototype)
+* [#568] NPC HP calculation is using +1 min CON bonus instead of 1 being the minimum HP
+
+### Enhancements
+* [#565] Prepare actor data automatically rather than waiting for character sheet to open
+
+## v.1.5.0
+
+### Bugfixes
+* [#556] Tours not working
+
+### Enhancements
+* [#557] Added tool to help with importing monsters which can be launched by a new macro (see Macro compedium and new tour)
+
+*Many thanks to Prototype for contributing code included in this build*
+
+## v.1.4.10
+
+### Bugfixes
+* [#548] Class armor selector showing non-base armor items in selector
+* [#549] Newly created Scrolls and Wands won't open after initial creation
+
+### Enhancements
+* [#184] NPC Special attacks can now be posted to chat by clicking on them
+
+*Many thanks to Prototype for contributing code included in this build*
+
+## v.1.4.9
+
+### Bugfixes
+* [#537] Ranger with D12 damage talent always rolls two damage dice even if weapon does not have the Versatile property (cosmetic issue only)
+
+### Enhancements
+* [#343] Added World setting to enable Pulp Mode. This switches the luck tracker on the character sheet to numeric input rather than boolean toggle
+* [#372] Add ability to indicate physical items are stashed and no longer taking up inventory slots
+* [#543] Add macro to initialize player luck.  This gives player characters a normal luck token, and rolls a number of tokens for Pulp Mode
+
+## v.1.4.8
+
+### Bugfixes
+* [#526] Quickstart macros using incorrect compendium paths
+* [#535] Un-migrated weapon properties in compendiums causing problems opening character sheets when added to them
+* [#540] Move quickstart adventure related macros into the adventure pack, as they don't work without that imported anyway
+
+*Many thanks to Prototype for contributing fixes included in this build*
+
+## v.1.4.7
+
+### Bugfixes
+* [#530] Token art mapping from Pathfinder Token Pack: Bestiaries module not working
+* [#531] Missing attack bonuses on the following Talents
+	- +1 to Melee Attacks and Damage
+	- +1 to Ranged Attacks and Damage
+
+### Enhancements
+* [#527] New predefined effect that will add selected attribute bonuses to AC (if positive)
+* [#528] Add built-in effect to support weapon damage dice improvent via matching weapon properties
+* [#529] Add predefined affect that adds to AC if no armor is worn
+
+## v.1.4.6
+
+### Bugfixes
+* [#485] Spell Advantage talent not functioning
+* [#521] Unable to add Weapon and Armor Mastery talents to character sheet
+
+### Enhancements
+* [#520] Switch Class HP roll setting to be a free text field so custom dice roll formulas can be used
+* [#522] Added "All Ranged Weapons" and "All Melee Weapons" checkbox to class equipment settings for more granular options
+
+## v.1.4.5
+
+### Bugfixes
+* [#515] Backstab option not available on attack rolls
+* [#516] Wand and Scroll item sheets not showing spell caster classes correctly
+
+### Enhancements
+* [#499] Add support for Boons and their various subtypes
+* [#517] Add support for limited use Class Abilities, and Class Abilities with no associated rolls
+* [#518] Weapon and Armor mastery using fixed base weapons rather than dynamically building a list from items available in compendiums
+
+## v.1.4.4
+
+### Bugfixes
+* [#513] Compendium item selectors need unique IDs to ensure they show the correct selection
+
+## v.1.4.3
+
+**NOTE:** If you have compendiums in your worlds you will need to re-migrate a pre-1.4.0 backup of your world once this version is installed to ensure it is migrated correctly.
+
+### Bugfixes
+* [#508] Migrating compendiums for 1.3.7 to 1.4.0 fails
+
+## v.1.4.2
+
+** Purely a version bump **
+
+## v.1.4.1
+
+** Release withdrawn due to packaging errors **
+
+## v.1.4.0
+
+### Bugfixes
+* [#431] Mage Armor Active Effect does not change AC
+* [#476] Attack bonuses missing from monsters
+* [#482] Can't create or import active effects when not in combat
+* [#483] Secret text doesn't behave correctly
+* [#486] Fixed typo in Magic Item Table 1, Result 20
+* [#488] Fixes for locked doors and missing monsters in The Lost Citadel of the Scarlet Minotaur adventure
+* [#493] Compendium item "Sword of the Ancients" missing base weapon type
+* [#496] Mage Armor spell effect not being applied
+
+### Enhancements
+* [#71] Add the ability to extend various character options
+* [#374] Added ability to create custom Classes
+* [#375] Added support for custom ancestries
+* [#376] Added support for rollable Class Abilities
+* [#342] Identify "rare" languages in the language selector to aid in selection
+* [#447] Added ability to easily access filtered compendium items
+* [#444] Added Bard class
+* [#449] Support Bard Bonuses exported by ShadowDarklings
+* [#480] Added ability to create custom weapon and armor properties
+* [#490] Added Condition for Halfling's "Stealthy" Invisibility ability
+* [#491] Added support for custom languages
+* [#494] Added support for custom background items
+* [#495] Added support for Deity items
+* [#497] Split character sheet notes out into their own tab
+* [#498] Fix character sheet header and tab controls at top of character sheet window
+* [#501] Update ShadowDarklings importer to use new character background items
+
 ## v.1.3.7
 
 ### Bugfixes

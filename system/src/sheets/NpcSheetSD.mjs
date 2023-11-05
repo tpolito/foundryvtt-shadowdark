@@ -7,7 +7,7 @@ export default class NpcSheetSD extends ActorSheetSD {
 		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ["shadowdark", "sheet", "npc"],
 			width: 600,
-			height: 666, // Memnon says "Hi!"
+			height: 700,
 			resizable: true,
 			tabs: [
 				{
@@ -43,7 +43,7 @@ export default class NpcSheetSD extends ActorSheetSD {
 		};
 
 		// Summarize the bonuses for the attack roll
-		const parts = ["@attackBonus"];
+		const parts = ["1d20", "@attackBonus"];
 		data.attackBonus = item.system.bonuses.attackBonus;
 
 		data.damageParts = ["@damageBonus"];
@@ -54,6 +54,9 @@ export default class NpcSheetSD extends ActorSheetSD {
 
 	/** @inheritdoc */
 	activateListeners(html) {
+		html.find("[data-action='show-feature']").click(
+			event => this._onShowFeature(event)
+		);
 		// Handle default listeners last so system listeners are triggered first
 		super.activateListeners(html);
 	}
@@ -122,5 +125,11 @@ export default class NpcSheetSD extends ActorSheetSD {
 		context.attacks = attacks;
 		context.features = features;
 		context.effects = effects;
+	}
+
+	async _onShowFeature(event) {
+		event.preventDefault();
+		const itemId = $(event.currentTarget).data("item-id");
+		this.actor.useAbility(itemId);
 	}
 }

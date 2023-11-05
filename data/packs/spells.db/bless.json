@@ -1,1 +1,0 @@
-{"id":"ezj5UhV3Fb44","effects":[],"img":"/icon/magic/perception/eye-slit-pink.webp","name":"BLESS","system":{"class":["priest"],"description":"<p>One creature you touch gains a luck token.</p>","duration":{"type":"instant","value":""},"lost":false,"magicItem":false,"predefinedEffects":false,"properties":[],"range":"close","tier":2},"type":"Spell"}

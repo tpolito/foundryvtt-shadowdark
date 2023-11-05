@@ -1,5 +1,5 @@
 <form class="{{cssClass}}" autocomplete="off">
-	<div>
+	<div class="fixed-header">
 		<header class="player-header">
 			<img
 				class="portrait"
@@ -44,18 +44,22 @@
 					{{localize "SHADOWDARK.sheet.player.tab.talents"}}
 				</a>
 
-				<a class="navigation-tab" data-tab="tab-effects">
-					{{localize "SHADOWDARK.sheet.item.tab.effects"}}
-				</a>
-
 				<a class="navigation-tab" data-tab="tab-background">
 					{{localize "SHADOWDARK.sheet.player.tab.background"}}
 				</a>
 
+				<a class="navigation-tab" data-tab="tab-notes">
+					{{localize "SHADOWDARK.sheet.player.tab.notes"}}
+				</a>
+
+				<a class="navigation-tab" data-tab="tab-effects">
+					{{localize "SHADOWDARK.sheet.item.tab.effects"}}
+				</a>
+
 			</div>
 		</nav>
+		<hr	/>
 	</div>
-	<hr	/>
 	<section class="player-body">
 		{{> actors/player/abilities }}
 		{{> actors/player/spells }}
@@ -63,5 +67,6 @@
 		{{> actors/player/inventory }}
 		{{> actors/partials/effects }}
 		{{> actors/player/background }}
+		{{> actors/player/notes }}
 	</section>
 </form>

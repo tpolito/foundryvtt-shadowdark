@@ -25,90 +25,69 @@ SHADOWDARK.ALIGNMENTS = {
 	chaotic: "SHADOWDARK.alignment.chaotic",
 };
 
-SHADOWDARK.ALIGNMENTS_SHORT = {
-	lawful: "SHADOWDARK.alignment.lawful_short",
-	neutral: "SHADOWDARK.alignment.neutral_short",
-	chaotic: "SHADOWDARK.alignment.chaotic_short",
-};
-
-SHADOWDARK.ARMOR_BASE_ARMOR = {
-	chainmail: "SHADOWDARK.item.armor.base_armor.chainmail",
-	"leather-armor": "SHADOWDARK.item.armor.base_armor.leather_armor",
-	"plate-mail": "SHADOWDARK.item.armor.base_armor.plate_mail",
-	shield: "SHADOWDARK.item.armor.base_armor.shield",
-};
-
 SHADOWDARK.ARMOR_BONUS_ATTRIBUTES = {
 	dex: "SHADOWDARK.ability_dex",
 };
 
-SHADOWDARK.ARMOR_PROPERTIES = {
-	shield: "SHADOWDARK.armor.properties.shield",
-	disadvStealth: "SHADOWDARK.armor.properties.disadvantage_stealth",
-	oneHanded: "SHADOWDARK.armor.properties.one_handed",
-	disadvSwim: "SHADOWDARK.armor.properties.disadvantage_swimming",
-	noSwim: "SHADOWDARK.armor.properties.no_swimming",
+SHADOWDARK.DICE = {
+	d4: "d4",
+	d6: "d6",
+	d8: "d8",
+	d10: "d10",
+	d12: "d12",
+	d20: "d20",
 };
 
-SHADOWDARK.BACKSTAB_CLASSES = ["thief"];
+SHADOWDARK.DAMAGE_DICE = [
+	"d4",
+	"d6",
+	"d8",
+	"d10",
+	"d12",
+];
 
-SHADOWDARK.CLASS_HD = {
-	fighter: "1d8",
-	ranger: "1d8",
-	priest: "1d6",
-	thief: "1d4",
-	wizard: "1d4",
+SHADOWDARK.BOON_TYPES = {
+	oath: "SHADOWDARK.boons.oath",
+	secret: "SHADOWDARK.boons.secret",
+	blessing: "SHADOWDARK.boons.blessing",
 };
 
-SHADOWDARK.CLASSES = {
-	fighter: "SHADOWDARK.class.fighter",
-	priest: "SHADOWDARK.class.priest",
-	ranger: "SHADOWDARK.class.ranger",
-	thief: "SHADOWDARK.class.thief",
-	wizard: "SHADOWDARK.class.wizard",
-};
-
+/* eslint-disable quote-props */
 SHADOWDARK.DEFAULTS = {
 	BASE_ARMOR_CLASS: 10,
 	GEAR_SLOTS: 10,
+	GEMS_PER_SLOT: 10,
 	FREE_COIN_CARRY: 100,
 	LEARN_SPELL_DC: 15,
 	LIGHT_TRACKER_UPDATE_INTERVAL_SECS: 30,
 	ITEM_IMAGES: {
-		Armor: "icons/equipment/chest/breastplate-banded-steel-gold.webp",
-		Basic: "icons/containers/bags/pouch-simple-brown.webp",
-		Effect: "icons/commodities/tech/cog-brass.webp",
-		Gem: "icons/commodities/gems/gem-faceted-navette-red.webp",
+		"Ancestry": "icons/environment/people/group.webp",
+		"Armor": "icons/equipment/chest/breastplate-banded-steel-gold.webp",
+		"Background": "icons/environment/people/commoner.webp",
+		"Basic": "icons/containers/bags/pouch-simple-brown.webp",
+		"Boon": "icons/skills/social/diplomacy-writing-letter.webp",
+		"Class Ability": "icons/tools/navigation/map-chart-tan.webp",
+		"Class": "icons/sundries/documents/document-sealed-brown-red.webp",
+		"Deity": "icons/magic/holy/yin-yang-balance-symbol.webp",
+		"Effect": "icons/commodities/tech/cog-brass.webp",
+		"Gem": "icons/commodities/gems/gem-faceted-navette-red.webp",
+		"Language": "icons/tools/scribal/ink-quill-pink.webp",
 		"NPC Attack": "icons/skills/melee/weapons-crossed-swords-yellow.webp",
 		"NPC Feature": "icons/creatures/abilities/dragon-breath-purple.webp",
-		Potion: "icons/consumables/potions/bottle-corked-red.webp",
-		Scroll: "icons/sundries/scrolls/scroll-runed-brown-purple.webp",
-		Spell: "icons/magic/symbols/runes-star-blue.webp",
-		Talent: "icons/sundries/books/book-worn-brown-grey.webp",
-		Wand: "icons/weapons/wands/wand-gem-violet.webp",
-		Weapon: "icons/weapons/swords/swords-short.webp",
+		"Potion": "icons/consumables/potions/bottle-corked-red.webp",
+		"Property": "icons/sundries/documents/document-torn-diagram-tan.webp",
+		"Scroll": "icons/sundries/scrolls/scroll-runed-brown-purple.webp",
+		"Spell": "icons/magic/symbols/runes-star-blue.webp",
+		"Talent": "icons/sundries/books/book-worn-brown-grey.webp",
+		"Wand": "icons/weapons/wands/wand-gem-violet.webp",
+		"Weapon": "icons/weapons/swords/swords-short.webp",
 	},
 };
+/* eslint-enable quote-props */
 
-SHADOWDARK.INVENTORY = {
-	GEMS_PER_SLOT: 10,
-};
-
-SHADOWDARK.LANGUAGES = {
-	celestial: "SHADOWDARK.language.celestial",
-	common: "SHADOWDARK.language.common",
-	diabolic: "SHADOWDARK.language.diabolic",
-	draconic: "SHADOWDARK.language.draconic",
-	dwarvish: "SHADOWDARK.language.dwarvish",
-	elvish: "SHADOWDARK.language.elvish",
-	giant: "SHADOWDARK.language.giant",
-	goblin: "SHADOWDARK.language.goblin",
-	merran: "SHADOWDARK.language.merran",
-	orcish: "SHADOWDARK.language.orcish",
-	primordial: "SHADOWDARK.language.primordial",
-	reptilian: "SHADOWDARK.language.reptilian",
-	sylvan: "SHADOWDARK.language.sylvan",
-	thanian: "SHADOWDARK.language.thanian",
+SHADOWDARK.LANGUAGE_RARITY = {
+	common: "SHADOWDARK.language.rarity.common",
+	rare: "SHADOWDARK.language.rarity.rare",
 };
 
 SHADOWDARK.LIGHT_SETTING_NAMES = {
@@ -139,6 +118,11 @@ SHADOWDARK.NPC_MOVES = {
 	special: "SHADOWDARK.npc_move.special",
 };
 
+SHADOWDARK.PROPERTY_TYPES = {
+	armor: "SHADOWDARK.property.type.option.armor",
+	weapon: "SHADOWDARK.property.type.option.weapon",
+};
+
 SHADOWDARK.RANGES = {
 	close: "SHADOWDARK.range.close",
 	near: "SHADOWDARK.range.near",
@@ -153,14 +137,14 @@ SHADOWDARK.RANGES_SHORT = {
 	self: "SHADOWDARK.range.self_short",
 };
 
-SHADOWDARK.SPELLCASTING_ABILITY = {
-	priest: "wis",
-	wizard: "int",
-};
-
-SHADOWDARK.SPELL_CASTER_CLASSES = {
-	priest: "SHADOWDARK.spell_caster.priest",
-	wizard: "SHADOWDARK.spell_caster.wizard",
+SHADOWDARK.OFFICIAL_SOURCES = {
+	"cursed-scroll-1": "Cursed Scroll Vol.1, Diablerie!",
+	"cursed-scroll-2": "Cursed Scroll Vol.2, Red Sands",
+	"cursed-scroll-3": "Cursed Scroll Vol.3, Midnight Sun",
+	"quickstart-game-master-guide": "Quickstart: Game Master Guide",
+	"quickstart-player-guide": "Quickstart: Player Guide",
+	"bard-and-ranger": "Shadowdark RPG: Bard and Ranger",
+	"core-rules": "Shadowdark RPG: Core Rules",
 };
 
 SHADOWDARK.SPELL_DURATIONS = {
@@ -273,33 +257,6 @@ SHADOWDARK.WEAPON_BASE_DAMAGE_DIE_ONLY = {
 	d8: "d8",
 	d10: "d10",
 	d12: "d12",
-};
-
-SHADOWDARK.WEAPON_BASE_WEAPON = {
-	"bastard-sword": "SHADOWDARK.item.weapon.base_weapon.bastard_sword",
-	club: "SHADOWDARK.item.weapon.base_weapon.club",
-	crossbow: "SHADOWDARK.item.weapon.base_weapon.crossbow",
-	dagger: "SHADOWDARK.item.weapon.base_weapon.dagger",
-	greataxe: "SHADOWDARK.item.weapon.base_weapon.greataxe",
-	greatsword: "SHADOWDARK.item.weapon.base_weapon.greatsword",
-	javelin: "SHADOWDARK.item.weapon.base_weapon.javelin",
-	longbow: "SHADOWDARK.item.weapon.base_weapon.longbow",
-	longsword: "SHADOWDARK.item.weapon.base_weapon.longsword",
-	mace: "SHADOWDARK.item.weapon.base_weapon.mace",
-	shortbow: "SHADOWDARK.item.weapon.base_weapon.shortbow",
-	shortsword: "SHADOWDARK.item.weapon.base_weapon.shortsword",
-	spear: "SHADOWDARK.item.weapon.base_weapon.spear",
-	staff: "SHADOWDARK.item.weapon.base_weapon.staff",
-	wand: "SHADOWDARK.item.weapon.base_weapon.wand",
-	warhammer: "SHADOWDARK.item.weapon.base_weapon.warhammer",
-};
-
-SHADOWDARK.WEAPON_PROPERTIES = {
-	finesse: "SHADOWDARK.weapon.properties.finesse",
-	loading: "SHADOWDARK.weapon.properties.loading",
-	thrown: "SHADOWDARK.weapon.properties.thrown",
-	twoHanded: "SHADOWDARK.weapon.properties.two_handed",
-	versatile: "SHADOWDARK.weapon.properties.versatile",
 };
 
 SHADOWDARK.WEAPON_TYPES = {

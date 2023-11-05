@@ -300,20 +300,40 @@ export default class RollSD extends Roll {
 	static async _rollWeapon(data) {
 		// Get dice information from the weapon
 		let numDice = data.item.system.damage.numDice;
-		let damageDie = data.item.isTwoHanded()
+		let damageDie = await data.item.isTwoHanded()
 			?	data.item.system.damage.twoHanded
 			: data.item.system.damage.oneHanded;
 
-		let versatileDamageDie = data.item.isVersatile()
+		let versatileDamageDie = await data.item.isVersatile()
 			? data.item.system.damage.twoHanded
 			: false;
+
+		// Improve the base damage die if this weapon has the relevant property
+		const weaponDamageDieImprovementByProperty =
+			data.actor.system.bonuses.weaponDamageDieImprovementByProperty ?? [];
+
+		for (const property of weaponDamageDieImprovementByProperty) {
+			if (await data.item.hasProperty(property)) {
+				damageDie = shadowdark.utils.getNextDieInList(
+					damageDie,
+					shadowdark.config.DAMAGE_DICE
+				);
+
+				if (versatileDamageDie) {
+					versatileDamageDie = shadowdark.utils.getNextDieInList(
+						versatileDamageDie,
+						shadowdark.config.DAMAGE_DICE
+					);
+				}
+			}
+		}
 
 		// Check if damage die is modified by talent
 		if (data.actor.system.bonuses.weaponDamageDieD12.some(
 			t => [data.item.name.slugify(), data.item.system.baseWeapon.slugify()].includes(t)
 		)) {
 			damageDie = "d12";
-			versatileDamageDie = "d12";
+			if (versatileDamageDie) versatileDamageDie = "d12";
 		}
 
 		// Check and handle critical failure/success
@@ -428,10 +448,6 @@ export default class RollSD extends Roll {
 	 * @returns {Promise(Roll)}			- Returns the promise of evaluated roll(s)
 	 */
 	static async RollDialog(parts, data, options={}) {
-		// 0'th position should have a dice roll string, if not it's a shorthand
-		// call and we need to add one.
-		if (!/^\d*d\d+$/.test(parts[0])) parts.unshift("1d20");
-
 		if ( options.fastForward ) {
 			return await this.Roll(parts, data, false, 0, options);
 		}
@@ -518,7 +534,7 @@ export default class RollSD extends Roll {
 	 * e.g. `flavor`, `title`
 	 * @returns {object}				- Data to populate the Chat Card template
 	 */
-	static _getChatCardTemplateData(data, options={}) {
+	static async _getChatCardTemplateData(data, options={}) {
 		const templateData = {
 			data,
 			title: (options.title) ? options.title : game.i18n.localize("SHADOWDARK.chatcard.default"),
@@ -530,6 +546,7 @@ export default class RollSD extends Roll {
 			isVersatile: false,
 			isRoll: true,
 			isNPC: data.actor?.type === "NPC",
+			targetDC: options.target ?? false,
 		};
 		if (data.rolls.main) {
 			templateData._formula = data.rolls.main.roll._formula;
@@ -537,7 +554,15 @@ export default class RollSD extends Roll {
 		if (data.item) {
 			templateData.isSpell = data.item.isSpell();
 			templateData.isWeapon = data.item.isWeapon();
-			templateData.isVersatile = data.item.isVersatile();
+			templateData.isVersatile = await data.item.isVersatile();
+
+			const propertyNames = [];
+
+			for (const property of await data.item.propertyItems()) {
+				propertyNames.push(property.name);
+			}
+
+			templateData.propertyNames = propertyNames;
 		}
 		return templateData;
 	}
@@ -557,7 +582,7 @@ export default class RollSD extends Roll {
 			? options.chatCardTemplate
 			: "systems/shadowdark/templates/chat/roll-card.hbs";
 
-		const chatCardData = this._getChatCardTemplateData(data, options);
+		const chatCardData = await this._getChatCardTemplateData(data, options);
 
 		return renderTemplate(chatCardTemplate, chatCardData);
 	}
@@ -577,7 +602,7 @@ export default class RollSD extends Roll {
 			options.target
 		);
 
-		// @todo: Write tests for this.
+		// TODO: Write tests for this.
 		// Add whether the roll succeeded or not to the roll data
 		data.rolls.main.success = (chatData.flags.success)
 			? chatData.flags.success

@@ -12,8 +12,8 @@ export default class PlayerSheetSD extends ActorSheetSD {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ["shadowdark", "sheet", "player"],
-			width: 560,
-			height: 560,
+			width: 600,
+			height: 700,
 			resizable: true,
 			tabs: [
 				{
@@ -39,6 +39,14 @@ export default class PlayerSheetSD extends ActorSheetSD {
 			event => this._onItemChatClick(event)
 		);
 
+		html.find(".ability-uses-decrement").click(
+			event => this._onAbilityUsesDecrement(event)
+		);
+
+		html.find(".ability-uses-increment").click(
+			event => this._onAbilityUsesIncrement(event)
+		);
+
 		html.find(".item-quantity-decrement").click(
 			event => this._onItemQuantityDecrement(event)
 		);
@@ -51,12 +59,12 @@ export default class PlayerSheetSD extends ActorSheetSD {
 			event => this._onToggleEquipped(event)
 		);
 
-		html.find(".item-toggle-light").click(
-			event => this._onToggleLightSource(event)
+		html.find(".item-toggle-stashed").click(
+			event => this._onToggleStashed(event)
 		);
 
-		html.find(".language-list.languages").click(
-			event => this._onKnownLanguages(event)
+		html.find(".item-toggle-light").click(
+			event => this._onToggleLightSource(event)
 		);
 
 		html.find(".open-gem-bag").click(
@@ -67,8 +75,12 @@ export default class PlayerSheetSD extends ActorSheetSD {
 			event => this._onSellTreasure(event)
 		);
 
-		html.find(".toggle-spell-lost").click(
-			event => this._onToggleSpellLost(event)
+		html.find(".toggle-lost").click(
+			event => this._onToggleLost(event)
+		);
+
+		html.find("[data-action='use-ability']").click(
+			event => this._onUseAbility(event)
 		);
 
 		html.find("[data-action='use-potion']").click(
@@ -83,11 +95,41 @@ export default class PlayerSheetSD extends ActorSheetSD {
 		super.activateListeners(html);
 	}
 
+	async getBackgroundSelectors() {
+		const system = this.actor.system;
+
+		const data = {
+			ancestry: {
+				name: "ancestry",
+				label: game.i18n.localize("SHADOWDARK.sheet.player.ancestry.label"),
+				tooltip: game.i18n.localize("SHADOWDARK.sheet.player.ancestry.tooltip"),
+				item: await fromUuid(system.ancestry) ?? null,
+			},
+			background: {
+				name: "background",
+				label: game.i18n.localize("SHADOWDARK.sheet.player.background.label"),
+				tooltip: game.i18n.localize("SHADOWDARK.sheet.player.background.tooltip"),
+				item: await fromUuid(system.background) ?? null,
+			},
+			class: {
+				name: "class",
+				label: game.i18n.localize("SHADOWDARK.sheet.player.class.label"),
+				tooltip: game.i18n.localize("SHADOWDARK.sheet.player.class.tooltip"),
+				item: await fromUuid(system.class) ?? null,
+			},
+			deity: {
+				name: "deity",
+				label: game.i18n.localize("SHADOWDARK.sheet.player.deity.label"),
+				tooltip: game.i18n.localize("SHADOWDARK.sheet.player.deity.tooltip"),
+				item: await fromUuid(system.deity) ?? null,
+			},
+		};
+
+		return data;
+	}
+
 	/** @override */
 	async getData(options) {
-		// Update the Gem Bag, but don't render it unless it's already showing
-		this.gemBag.render(false);
-
 		const context = await super.getData(options);
 
 		context.gearSlots = this.actor.numGearSlots();
@@ -96,6 +138,7 @@ export default class PlayerSheetSD extends ActorSheetSD {
 		context.armorClass = await this.actor.getArmorClass();
 
 		context.isSpellcaster = await this.actor.isSpellcaster();
+		context.canUseMagicItems = await this.actor.canUseMagicItems();
 		context.showSpellsTab = context.isSpellcaster || this.actor.system.class === "";
 
 		context.maxHp = this.actor.system.attributes.hp.base
@@ -103,12 +146,9 @@ export default class PlayerSheetSD extends ActorSheetSD {
 
 		context.abilities = this.actor.getCalculatedAbilities();
 
-		// Languages
-		context.knownLanguages = [];
-		for (const key of this.actor.system.languages) {
-			context.knownLanguages.push(CONFIG.SHADOWDARK.LANGUAGES[key]);
-		}
-		context.knownLanguagesDisplay = context.knownLanguages.join(", ");
+		context.knownLanguages = await this.actor.languageItems();
+
+		context.backgroundSelectors = await this.getBackgroundSelectors();
 
 		// Get the inventory ready
 		await this._prepareItems(context);
@@ -118,13 +158,37 @@ export default class PlayerSheetSD extends ActorSheetSD {
 				this.actor.overrides?.system?.abilities || {}
 			)
 		);
+
 		context.attributeOverrides = Object.keys(
 			foundry.utils.flattenObject(
 				this.actor.overrides?.system?.attributes || {}
 			)
 		);
 
+		context.characterClass = this.actor.backgroundItems.class?.name;
+		context.classTitle = this.actor.backgroundItems.title;
+
+		context.usePulpMode = game.settings.get("shadowdark", "usePulpMode");
+
+		// Update the Gem Bag, but don't render it unless it's already showing
+		this.gemBag.render(false);
+
 		return context;
+	}
+
+	async _onDropBackgroundItem(item) {
+		switch (item.type) {
+			case "Ancestry":
+				return this.actor.addAncestry(item);
+			case "Background":
+				return this.actor.addBackground(item);
+			case "Class":
+				return this.actor.addClass(item);
+			case "Deity":
+				return this.actor.addDeity(item);
+			case "Language":
+				return this.actor.addLanguage(item);
+		}
 	}
 
 	/** @inheritdoc */
@@ -147,8 +211,24 @@ export default class PlayerSheetSD extends ActorSheetSD {
 
 		if (item.type === "Spell") return this._createItemFromSpellDialog(item);
 
+		if (await this._effectDropNotAllowed(data)) return false;
+
 		// Talents & Effects may need some user input
-		if (["Talent", "Effect"].includes(item.type)) return this._createItemWithEffect(item);
+		if (["Talent", "Effect"].includes(item.type)) {
+			return this._createItemWithEffect(item);
+		}
+
+		const backgroundItems = [
+			"Ancestry",
+			"Background",
+			"Class",
+			"Deity",
+			"Language",
+		];
+
+		if (backgroundItems.includes(item.type)) {
+			return this._onDropBackgroundItem(item);
+		}
 
 		// Activate light spell if dropped onto the sheet
 		if (CONFIG.SHADOWDARK.LIGHT_SOURCE_ITEM_IDS.includes(item.id)) {
@@ -217,10 +297,11 @@ export default class PlayerSheetSD extends ActorSheetSD {
 					const effectKey = (key) ? key : c.key.split(".")[2];
 
 					// Ask for user input
-					c.value = await item._handlePredefinedEffect(effectKey);
+					let linkedName;
+					[c.value, linkedName] = await item._handlePredefinedEffect(effectKey);
 
 					if (c.value) {
-						name += ` (${game.i18n.localize(CONFIG.SHADOWDARK.WEAPON_BASE_WEAPON[c.value])})`;
+						name += ` (${linkedName})`;
 					}
 				}
 				return c;
@@ -257,7 +338,7 @@ export default class PlayerSheetSD extends ActorSheetSD {
 				// Spell Advantage requires special handling as it uses the `advantage` bons
 				if (e.changes.some(c => c.key === "system.bonuses.advantage")) {
 					// If there is no value with REPLACME, it is another type of advantage talent
-					if (e.changes.some(c => c.value === "REPLACME")) {
+					if (e.changes.some(c => c.value === "REPLACEME")) {
 						const key = "spellAdvantage";
 						item = await this._modifyEffectChangesWithInput(item, e, key);
 					}
@@ -360,6 +441,38 @@ export default class PlayerSheetSD extends ActorSheetSD {
 		super._onDropItemCreate(itemData);
 	}
 
+	async _onAbilityUsesDecrement(event) {
+		event.preventDefault();
+
+		const itemId = $(event.currentTarget).data("item-id");
+		const item = this.actor.getEmbeddedDocument("Item", itemId);
+
+		if (item.system.uses.available > 0) {
+			this.actor.updateEmbeddedDocuments("Item", [
+				{
+					_id: itemId,
+					"system.uses.available": item.system.uses.available - 1,
+				},
+			]);
+		}
+	}
+
+	async _onAbilityUsesIncrement(event) {
+		event.preventDefault();
+
+		const itemId = $(event.currentTarget).data("item-id");
+		const item = this.actor.getEmbeddedDocument("Item", itemId);
+
+		if (item.system.uses.available < item.system.uses.max) {
+			this.actor.updateEmbeddedDocuments("Item", [
+				{
+					_id: itemId,
+					"system.uses.available": item.system.uses.available + 1,
+				},
+			]);
+		}
+	}
+
 	async _onItemChatClick(event) {
 		event.preventDefault();
 		const itemId = $(event.currentTarget).data("item-id");
@@ -398,14 +511,6 @@ export default class PlayerSheetSD extends ActorSheetSD {
 				},
 			]);
 		}
-	}
-
-	_onKnownLanguages(event) {
-		event.preventDefault();
-
-		new shadowdark.apps.PlayerLanguagesSD(
-			this.actor, {event: event}
-		).render(true);
 	}
 
 	async _onLearnSpell(event) {
@@ -463,10 +568,36 @@ export default class PlayerSheetSD extends ActorSheetSD {
 			{
 				_id: itemId,
 				"system.equipped": !item.system.equipped,
+				"system.stashed": false,
 			},
 		]);
 
 		if (item.type === "Armor") this.actor.updateArmor(updatedItem);
+	}
+
+	async _onToggleStashed(event) {
+		event.preventDefault();
+
+		const itemId = $(event.currentTarget).data("item-id");
+		const item = this.actor.getEmbeddedDocument("Item", itemId);
+
+		const [updatedItem] = await this.actor.updateEmbeddedDocuments("Item", [
+			{
+				_id: itemId,
+				"system.stashed": !item.system.stashed,
+				"system.equipped": false,
+			},
+		]);
+
+		if (item.type === "Armor") this.actor.updateArmor(updatedItem);
+	}
+
+	async _onUseAbility(event) {
+		event.preventDefault();
+
+		const itemId = $(event.currentTarget).data("item-id");
+
+		this.actor.useAbility(itemId);
 	}
 
 	async _onUsePotion(event) {
@@ -508,7 +639,7 @@ export default class PlayerSheetSD extends ActorSheetSD {
 		this._toggleLightSource(item);
 	}
 
-	async _onToggleSpellLost(event) {
+	async _onToggleLost(event) {
 		event.preventDefault();
 		const itemId = $(event.currentTarget).data("item-id");
 		const item = this.actor.getEmbeddedDocument("Item", itemId);
@@ -566,6 +697,21 @@ export default class PlayerSheetSD extends ActorSheetSD {
 
 	async _prepareItems(context) {
 		const gems = [];
+
+		const boons = {
+			blessing: {
+				label: game.i18n.localize("SHADOWDARK.sheet.player.boons.blessings.label"),
+				items: [],
+			},
+			oath: {
+				label: game.i18n.localize("SHADOWDARK.sheet.player.boons.oaths.label"),
+				items: [],
+			},
+			secret: {
+				label: game.i18n.localize("SHADOWDARK.sheet.player.boons.secrets.label"),
+				items: [],
+			},
+		};
 
 		const inventory = {
 			armor: {
@@ -634,6 +780,8 @@ export default class PlayerSheetSD extends ActorSheetSD {
 
 		const attacks = {melee: [], ranged: []};
 
+		const allClassAbilities = {};
+
 		let slotCount = 0;
 
 		for (const i of this._sortAllItems(context)) {
@@ -653,7 +801,9 @@ export default class PlayerSheetSD extends ActorSheetSD {
 
 				i.slotsUsed = totalSlotsUsed;
 
-				slotCount += i.slotsUsed;
+				if (!i.system.stashed) {
+					slotCount += i.slotsUsed;
+				}
 
 				const section = i.system.treasure
 					? "treasure"
@@ -689,6 +839,11 @@ export default class PlayerSheetSD extends ActorSheetSD {
 					attacks.ranged.push(...weaponAttacks.ranged);
 				}
 			}
+			else if (i.type === "Boon") {
+				if (boons[i.system.boonType]) {
+					boons[i.system.boonType].items.push(i);
+				}
+			}
 			else if (i.type === "Gem") {
 				gems.push(i);
 			}
@@ -704,6 +859,18 @@ export default class PlayerSheetSD extends ActorSheetSD {
 			else if (i.type === "Effect") {
 				const category = i.system.category;
 				effects[category].items.push(i);
+			}
+			else if (i.type === "Class Ability") {
+				const group = i.system.group !== ""
+					? i.system.group
+					: game.i18n.localize("SHADOWDARK.sheet.abilities.ungrouped.label");
+
+				if (Array.isArray(allClassAbilities[group])) {
+					allClassAbilities[group].push(i);
+				}
+				else {
+					allClassAbilities[group] = [i];
+				}
 			}
 		}
 
@@ -722,10 +889,24 @@ export default class PlayerSheetSD extends ActorSheetSD {
 		let totalGems = gems.length;
 
 		if (totalGems > 0) {
-			gemSlots = Math.ceil(totalGems / CONFIG.SHADOWDARK.INVENTORY.GEMS_PER_SLOT);
+			gemSlots = Math.ceil(totalGems / CONFIG.SHADOWDARK.DEFAULTS.GEMS_PER_SLOT);
 		}
 
+		const classAbilities = [];
+
+		const sortedGroups = Object.keys(allClassAbilities).sort((a, b) => a.localeCompare(b));
+		for (const group of sortedGroups) {
+			classAbilities.push({
+				name: group,
+				abilities: allClassAbilities[group],
+			});
+		}
+
+		context.classAbilities = classAbilities;
+		context.hasClassAbilities = classAbilities.length > 0;
+
 		context.attacks = attacks;
+		context.boons = boons;
 		context.coins = {totalCoins, coinSlots};
 		context.gems = {items: gems, totalGems, gemSlots};
 		context.inventory = inventory;

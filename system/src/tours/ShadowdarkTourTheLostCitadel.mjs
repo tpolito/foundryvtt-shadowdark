@@ -21,11 +21,11 @@ export class ShadowdarkTheLostCitadelTour extends ShadowdarkTour {
 					action: "scrollTo",
 				},
 				{
-					id: "sd-tlc-compendium",
-					selector: "li[data-pack='shadowdark.the-lost-citadel-adventure']",
-					title: "Adventure Compendium",
-					content: "<p>The interesting today is the Adventure Compendiums, specifically the Lost Citadel</p>",
-					action: "click",
+					id: "sd-tlc-compendium-open",
+					selector: "div[id='compendium-shadowdark.quickstart-adventures'] .directory-header",
+					title: "Quickstart folder",
+					content: "<p>Open the Quick Start Adventures compendium.</p>",
+					action: "scrollTo",
 				},
 				{
 					id: "sd-tlc-compendium-adventure",
@@ -53,7 +53,7 @@ export class ShadowdarkTheLostCitadelTour extends ShadowdarkTour {
 					selector: "#tours-management .window-title",
 					title: "Thank you!",
 					content:
-            "<p><b>Thank you!</b> for following along, learning how to <b>roll from Player character sheet</b> for <b>Shadowdark RPG</b>.</p>\n<p>For more information, see the other available tours.</p>",
+            "<p><b>Thank you!</b> for following along, learning how to <b>import the Quickstart adventure into Foundry</b> for <b>Shadowdark RPG</b>.</p>\n<p>For more information, see the other available tours.</p>",
 					action: "scrollTo",
 				},
 			],
@@ -68,7 +68,10 @@ export class ShadowdarkTheLostCitadelTour extends ShadowdarkTour {
 			// Go to compendium
 			document.querySelector('a[data-tab="compendium"]').click();
 		}
-
+		if (this.currentStep.id === "sd-tlc-compendium-open") {
+			await game.packs.get("shadowdark.quickstart-adventures").render(true);
+			await delay(300);
+		}
 		if (this.currentStep.id === "sd-tlc-compendium-importer") {
 			await delay(300);
 		}
@@ -79,6 +82,8 @@ export class ShadowdarkTheLostCitadelTour extends ShadowdarkTour {
 				await delay(300);
 			});
 			await $("#settings button[data-action=tours]").click();
+			await delay(200);
+			await document.querySelector("a.category-tab[data-tab=system]").click();
 		}
 
 		await super._preStep();

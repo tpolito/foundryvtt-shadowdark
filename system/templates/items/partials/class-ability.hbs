@@ -1,0 +1,67 @@
+<div class="item-details">
+	<div class="item-detail">
+		<label>{{localize "SHADOWDARK.class-ability.group.label"}}</label>
+		<input
+			name="system.group"
+			type="text"
+			value="{{ item.system.group }}"
+		/>
+	</div>
+	<div class="item-detail">
+		<label>{{localize "SHADOWDARK.class-ability.ability.label"}}</label>
+		<select name="system.ability">
+			<option value="">&mdash;</option>
+			{{selectOptions
+				config.ABILITIES_LONG
+				selected=system.ability
+				localize=false
+			}}
+		</select>
+	</div>
+	<div class="item-detail">
+		<label>{{localize 'SHADOWDARK.class-ability.dc.label'}}</label>
+		{{numberInput
+			item.system.dc
+			name="system.dc"
+			placeholder="0"
+		}}
+	</div>
+	<div class="item-detail">
+		<div class="checkbox">
+			<label>{{localize "SHADOWDARK.class-ability.limited-uses.label"}}</label>
+			<input type="checkbox" name="system.limitedUses" {{checked item.system.limitedUses}}>
+		</div>
+		{{#if system.limitedUses}}
+			<div class="grid-2-columns">
+				<div class="item-detail">
+					<label>{{localize 'SHADOWDARK.class-ability.available.label'}}</label>
+					{{numberInput
+						item.system.uses.available
+						name="system.uses.available"
+						placeholder="0"
+					}}
+				</div>
+				<div class="item-detail">
+					<label>{{localize 'SHADOWDARK.class-ability.maximum.label'}}</label>
+					{{numberInput
+						item.system.uses.max
+						name="system.uses.max"
+						placeholder="0"
+					}}
+				</div>
+			</div>
+		{{/if}}
+	</div>
+	<div class="item-detail">
+		<div class="checkbox">
+			<label>{{localize "SHADOWDARK.class-ability.lose_on_failure.label"}}</label>
+			<input type="checkbox" name="system.loseOnFailure" {{checked item.system.loseOnFailure}}>
+		</div>
+		{{#if system.loseOnFailure}}
+			<div class="checkbox">
+				<label>{{localize "SHADOWDARK.class-ability.lost.label"}}</label>
+				<input type="checkbox" name="system.lost" {{checked item.system.lost}}>
+			</div>
+		{{/if}}
+	</div>
+</div>

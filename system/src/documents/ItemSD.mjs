@@ -17,13 +17,6 @@ export default class ItemSD extends Item {
 
 		// Store the creation time & initiative on the effect
 		if (data.type === "Effect") {
-			if (this.system.duration.type === "rounds" && !game.combat) {
-				ui.notifications.warn(
-					game.i18n.localize("SHADOWDARK.item.effect.warning.add_round_item_outside_combat")
-				);
-				return false;
-			}
-
 			const combatTime = (game.combat)
 				? `${game.combat.round}.${game.combat.turn}`
 				: null;
@@ -43,13 +36,24 @@ export default class ItemSD extends Item {
 		const description = await this.getEnrichedDescription();
 
 		const isSpellcaster = await this.actor.isSpellcaster();
+		const canUseMagicItems = await this.actor.canUseMagicItems();
 
 		const data = {
 			actor: this.actor,
 			isSpellcaster,
+			canUseMagicItems,
 			description,
 			item: this.toObject(),
+			itemProperties: await this.propertyItems(),
 		};
+
+		if (["Scroll", "Spell", "Wand"].includes(this.type)) {
+			data.spellClasses = await this.getSpellClassesDisplay();
+		}
+
+		if (["Armor", "Weapon"].includes(this.type)) {
+			data.baseItemName = await this.getBaseItemName();
+		}
 
 		return data;
 	}
@@ -79,6 +83,27 @@ export default class ItemSD extends Item {
 			? await ChatMessage.create(chatData) : chatData;
 
 		return card;
+	}
+
+	async getBaseItemName() {
+		if (this.type === "Armor") {
+			if (this.system.baseArmor === "") return "";
+
+			for (const armor of await shadowdark.compendiums.baseArmor()) {
+				if (armor.name.slugify() === this.system.baseArmor) {
+					return armor.name;
+				}
+			}
+		}
+		else if (this.type === "Weapon") {
+			if (this.system.baseWeapon === "") return "";
+
+			for (const armor of await shadowdark.compendiums.baseWeapons()) {
+				if (armor.name.slugify() === this.system.baseWeapon) {
+					return armor.name;
+				}
+			}
+		}
 	}
 
 	async getDetailsContent() {
@@ -184,11 +209,15 @@ export default class ItemSD extends Item {
 	/*  Methods                                     */
 	/* -------------------------------------------- */
 
-	hasProperty(property) {
-		for (const key of this.system.properties) {
-			if (key === property) return true;
-		}
-		return false;
+	async hasProperty(property) {
+		property = property.slugify();
+
+		const propertyItems = await this.propertyItems();
+		const propertyItem = propertyItems.find(
+			p => p.name.slugify() === property
+		);
+
+		return propertyItem ? true : false;
 	}
 
 	isActiveLight() {
@@ -220,7 +249,7 @@ export default class ItemSD extends Item {
 	}
 
 	isMagicItem() {
-		return this.system.magicItem;
+		return this.system.isPhysical && this.system.magicItem;
 	}
 
 	isVersatile() {
@@ -228,40 +257,31 @@ export default class ItemSD extends Item {
 	}
 
 	isOneHanded() {
-		return this.hasProperty("oneHanded");
+		return this.hasProperty("one-handed");
 	}
 
 	isTwoHanded() {
 		const damage = this.system.damage;
-		return this.hasProperty("twoHanded")
+		return this.hasProperty("two-handed")
 			|| (damage.oneHanded === "" && damage.twoHanded !== "");
 	}
 
-	isAShield() {
-		return this.hasProperty("shield");
+	async isAShield() {
+		return await this.hasProperty("shield");
 	}
 
-	isNotAShield() {
-		return !this.isAShield();
+	async isNotAShield() {
+		const isAShield = await this.isAShield();
+		return !isAShield;
 	}
 
-	propertiesDisplay() {
+	async propertiesDisplay() {
 		let properties = [];
 
 		if (this.type === "Armor" || this.type === "Weapon") {
-			for (const key of this.system.properties) {
-				if (this.type === "Armor") {
-					properties.push(
-						CONFIG.SHADOWDARK.ARMOR_PROPERTIES[key]
-					);
-				}
-				else if (this.type === "Weapon") {
-					properties.push(
-						CONFIG.SHADOWDARK.WEAPON_PROPERTIES[key]
-					);
-				}
+			for (const property of await this.propertyItems()) {
+				properties.push(property.name);
 			}
-
 		}
 
 		return properties.join(", ");
@@ -293,7 +313,7 @@ export default class ItemSD extends Item {
 	async _askEffectInput(choiceType, choices) {
 		let options = "";
 		for (const [key, value] of Object.entries(choices)) {
-			options += `<option value="${key}">${value}</option>`;
+			options += `<option data-slug="${key}" value="${value}"></option>`;
 		}
 
 		const title = game.i18n.localize(`SHADOWDARK.dialog.effect.choice.${choiceType}`);
@@ -314,9 +334,19 @@ export default class ItemSD extends Item {
  			buttons: {
 				submit: {
 					label: game.i18n.localize("SHADOWDARK.dialog.submit"),
-					callback: html => (html[0].querySelector("input").value)
-						? html[0].querySelector("input").value
-						: false,
+					callback: html => {
+						const formValue = html[0].querySelector("input")?.value ?? "";
+
+						let slug = false;
+						for (const [key, value] of Object.entries(choices)) {
+							if (formValue === value) {
+								slug = key;
+								break;
+							}
+						}
+
+						return [slug, formValue];
+					},
 				},
 			},
 			close: () => false,
@@ -327,26 +357,29 @@ export default class ItemSD extends Item {
 	}
 
 	/**
-	 * Handles special cases for predefined effect mappings that use the
-	 * 'askInput' fields.
+	 * Handles special cases for predefined effect mappings
+	 *
 	 * @param {string} key - effectKey from mapping
 	 * @param {Object} value - data value from mapping
 	 * @returns {Object}
 	 */
 	async _handlePredefinedEffect(key, value) {
-		// @todo: CUSTOMIZATION How to generalize this with custom expansion of base items?
-		if (["weaponMastery", "weaponDamageDieD12"].includes(key)) {
-			return this._askEffectInput("weapon", CONFIG.SHADOWDARK.WEAPON_BASE_WEAPON);
+		if (key === "acBonusFromAttribute") {
+			return this._askEffectInput(
+				"attribute",
+				shadowdark.config.ABILITIES_LONG
+			);
 		}
 		else if (key === "armorMastery") {
-			return this._askEffectInput("armor", CONFIG.SHADOWDARK.ARMOR_BASE_ARMOR);
-		}
-		else if (key === "spellAdvantage") {
-			// @todo: CUSTOMIZATION Allow custom spell compendiums
-			const spellNames = await this.getSpellListSlugified();
-			return this._askEffectInput("spell", spellNames);
+			return this._askEffectInput(
+				"armor",
+				await shadowdark.utils.getSlugifiedItemList(
+					await shadowdark.compendiums.baseArmor()
+				)
+			);
 		}
 		else if (key === "lightSource") {
+			// TODO Need to move to light source objects to allow customisation
 			const lightSourceList = await foundry.utils.fetchJsonWithTimeout(
 				"systems/shadowdark/assets/mappings/map-light-sources.json"
 			);
@@ -356,7 +389,42 @@ export default class ItemSD extends Item {
 			});
 			return this._askEffectInput("lightSource", lightSources);
 		}
-		return value;
+		else if (key === "spellAdvantage") {
+			return this._askEffectInput(
+				"spell",
+				await shadowdark.utils.getSlugifiedItemList(
+					await shadowdark.compendiums.spells()
+				)
+			);
+		}
+		else if (["weaponMastery", "weaponDamageDieD12"].includes(key)) {
+			return this._askEffectInput(
+				"weapon",
+				await shadowdark.utils.getSlugifiedItemList(
+					await shadowdark.compendiums.baseWeapons()
+				)
+			);
+		}
+		else if (key === "weaponDamageDieImprovementByProperty") {
+			return this._askEffectInput(
+				"property",
+				await shadowdark.utils.getSlugifiedItemList(
+					await shadowdark.compendiums.weaponProperties()
+				)
+			);
+		}
+
+		return [value];
+	}
+
+	async propertyItems() {
+		const propertyItems = [];
+
+		for (const uuid of this.system.properties ?? []) {
+			propertyItems.push(await fromUuid(uuid));
+		}
+
+		return propertyItems;
 	}
 
 	// Duration getters
@@ -443,17 +511,16 @@ export default class ItemSD extends Item {
 		}
 	}
 
-	/**
-	 * Makes an array with all available spell names, slugified. This
-	 * is used for the predefined effects for Spell Advantage.
-	 * @returns {Array<string>}
-	 */
-	async getSpellListSlugified() {
-		// @todo: CUSTOMIZATION Allow custom spell compendiums
-		const spellPack = game.packs.get("shadowdark.spells");
-		const spellDocuments = await spellPack.getDocuments();
-		const spellNames = {};
-		spellDocuments.map(i => spellNames[i.name.slugify()] = i.name );
-		return spellNames;
+	async getSpellClassesDisplay() {
+		const classes = [];
+
+		for (const uuid of this.system.class ?? []) {
+			const item = await fromUuid(uuid);
+			classes.push(item.name);
+		}
+
+		classes.sort((a, b) => a.localeCompare(b));
+
+		return classes.join(", ");
 	}
 }

@@ -3,12 +3,12 @@
 	data-actor-id="{{actor._id}}"
 	data-item-id="{{item._id}}"
 >
-  <header class="card-header flexrow">
-    <img src="{{item.img}}" data-tooltip="{{item.name}}"/>
-    <h3 class="item-name">{{item.name}}</h3>
-  </header>
+	<header class="card-header flexrow">
+		<img src="{{item.img}}" data-tooltip="{{item.name}}"/>
+		<h3 class="item-name">{{item.name}}</h3>
+	</header>
 
-  <div class="card-content">
+	<div class="card-content">
 		<p>
 			<b>{{localize 'SHADOWDARK.item.weapon_type'}}</b> <em>{{fromConfig "WEAPON_TYPES" item.system.type}}</em>,
 			<b>{{localize 'SHADOWDARK.item.weapon_range'}}</b> <em>{{fromConfig "RANGES" item.system.range}}</em>
@@ -25,26 +25,37 @@
 		{{/if}}
 		{{#if item.system.baseWeapon}}
 			<p>
-				<b>{{localize 'SHADOWDARK.item.weapon.base_weapon.title'}}</b> <em>{{fromConfig "WEAPON_BASE_WEAPON" item.system.baseWeapon}}</em>
+				<b>{{localize 'SHADOWDARK.item.weapon.base_weapon.title'}}</b> <em>{{baseItemName}}</em>
 			</p>
 		{{/if}}
 		{{{description}}}
-  </div>
-
-	<div class="chat-card-buttons">
-		<button
-			class="item-control"
-			data-actor-id="{{actor.id}}"
-			data-item-id="{{item._id}}"
-			data-action="roll-attack"
-		>
-			{{localize 'SHADOWDARK.chat_card.button.attack'}}
-		</button>
 	</div>
 
-  <footer class="card-footer">
-		{{#each item.system.properties as |prop|}}
-			<span>{{fromConfig "WEAPON_PROPERTIES" prop}}</span>
-		{{/each}}
-  </footer>
+	<div class="chat-card-buttons">
+		{{#unless item.system.stashed}}
+			<button
+				class="item-control"
+				data-actor-id="{{actor.id}}"
+				data-item-id="{{item._id}}"
+				data-action="roll-attack"
+			>
+				{{localize 'SHADOWDARK.chat_card.button.attack'}}
+			</button>
+		{{/unless}}
+	</div>
+
+	<footer class="card-footer">
+		<ul class="tags">
+			{{#each itemProperties}}
+				<li class="tag tag_primary tag_small">
+					{{this.name}}
+				</li>
+			{{/each}}
+			{{#if item.system.stashed}}
+				<li class="tag tag_secondary tag_small">
+					{{localize 'SHADOWDARK.item.stashed.label'}}
+				</li>
+			{{/if}}
+		</ul>
+	</footer>
 </div>

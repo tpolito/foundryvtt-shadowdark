@@ -167,9 +167,6 @@ export default ({ describe, it, after, before, expect }) => {
 		it("has luck", () => {
 			expect(actor.system.luck).is.not.undefined;
 		});
-		it("has title", () => {
-			expect(actor.system.title).is.not.undefined;
-		});
 
 		after(async () => {
 			await actor.delete();
@@ -259,7 +256,7 @@ export default ({ describe, it, after, before, expect }) => {
 			expect(actor.system.move).is.not.undefined;
 		});
 		// Expecting attacks to be items rather than system data
-		// @todo: Write tests for attacks
+		// TODO: Write tests for attacks
 
 		after(async () => {
 			await actor.delete();
@@ -388,22 +385,21 @@ export default ({ describe, it, after, before, expect }) => {
 			await trashChat();
 		});
 
-		describe("#450 NPC HP Roll has at least 1 con mod added to roll", async () => {
-			Array.from(Array(9), (_, i) => (i - 4)).forEach(async mod => {
-				const conMod = Math.max(mod, 1);
-				it(`Mod ${mod} should have ${conMod} added to HP roll`, async () => {
+		describe("#568 Level 0 NPC HP Roll should be at least 1", async () => {
+			Array.from(Array(5), (_, i) => (i - 4)).forEach(async mod => {
+				it(`NPC with CON Mod ${mod} should have 1 HP`, async () => {
 					await trashChat();
-					await actor.update({"system.abilities.con.mod": mod});
+					await actor.update({
+						"system.abilities.con.mod": mod,
+						"system.level.value": 0,
+					});
 					// Roll HP
 					await actor._npcRollHP();
 					await waitForInput();
 
-					// Catch the chat card
-					expect(game.messages?.size).equal(1);
-					const content = game.messages.contents[0].content;
-
 					// Check the formula
-					expect($(content).find(".dice-formula")[0].innerHTML).equal(`${actor.system.level.value}d8 + ${conMod}`);
+					expect(actor.system.attributes.hp.max).equal(1);
+					expect(actor.system.attributes.hp.value).equal(1);
 
 					// Remove chat card
 					await trashChat();
@@ -414,7 +410,7 @@ export default ({ describe, it, after, before, expect }) => {
 		it("#466 Autorolled NPC HP is applied to actor", async () => {
 			await trashChat();
 			// Set the settings
-			game.settings.set("shadowdark", "rollNpcHpWhenAddedToScene", true);
+			await game.settings.set("shadowdark", "rollNpcHpWhenAddedToScene", true);
 
 			// Trigger the hook as a token was dropped
 			Hooks.call("createToken", {actor}, {}, {});
@@ -449,13 +445,13 @@ export default ({ describe, it, after, before, expect }) => {
 				{
 					type: "Armor",
 					name: "Test Shield 1",
-					"system.properties": ["shield"],
+					"system.properties": ["Compendium.shadowdark.properties.Item.61gM0DuJQwLbIBwu"],
 					"system.equipped": true,
 				},
 				{
 					type: "Armor",
 					name: "Test Shield 2",
-					"system.properties": ["shield"],
+					"system.properties": ["Compendium.shadowdark.properties.Item.61gM0DuJQwLbIBwu"],
 				},
 			]);
 		});
@@ -518,7 +514,7 @@ export default ({ describe, it, after, before, expect }) => {
 				{
 					type: "Armor",
 					name: "Test Shield 1",
-					"system.properties": ["shield"],
+					"system.properties": ["Compendium.shadowdark.properties.Item.61gM0DuJQwLbIBwu"],
 					"system.ac.modifier": 3,
 					"system.equipped": true,
 				},

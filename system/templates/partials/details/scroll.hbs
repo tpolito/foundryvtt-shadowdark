@@ -1,12 +1,13 @@
 <p>
-	<b>{{localize "SHADOWDARK.item.spell_class"}}</b> <em>{{joinStrings item.system.class}}</em>
+	<b>{{localize "SHADOWDARK.item.spell_class"}}</b> <em>{{spellClasses}}</em>
 </p>
 <div class="details-description">
 	{{{description}}}
 </div>
-<div class="grid-2-columns">
-	{{#if isSpellcaster}}
-		<button
+<div {{#if isSpellcaster}}class="grid-2-columns"{{/if}}>
+	{{#unless item.system.stashed}}
+		{{#if canUseMagicItems}}
+			<button
 				class="item-control"
 				data-actor-id="{{actor.id}}"
 				data-item-id="{{item._id}}"
@@ -14,30 +15,40 @@
 			>
 				{{localize 'SHADOWDARK.chat_card.button.use_scroll'}}
 			</button>
-		<button
-			class="item-control"
-			data-actor-id="{{actor._id}}"
-			data-item-id="{{item._id}}"
-			data-action="learn-spell"
-		>
-			{{localize 'SHADOWDARK.chat_card.button.learn_spell'}}
-		</button>
-	{{/if}}
+		{{/if}}
+		{{#if isSpellcaster}}
+			<button
+				class="item-control"
+				data-actor-id="{{actor._id}}"
+				data-item-id="{{item._id}}"
+				data-action="learn-spell"
+			>
+				{{localize 'SHADOWDARK.chat_card.button.learn_spell'}}
+			</button>
+		{{/if}}
+	{{/unless}}
 </div>
 <footer class="details-footer">
-	<span>
-		{{localize "SHADOWDARK.item.spell_tier"}}:
-		{{ item.system.tier }}
-	</span>
-	<span>
-		{{localize "SHADOWDARK.item.spell_duration"}}:
-		{{getSpellDuration
-			item.system.duration.type
-			item.system.duration.value
-		}}
-	</span>
-	<span>
-		{{localize "SHADOWDARK.item.spell_range"}}:
-		{{fromConfig "SPELL_RANGES" item.system.range }}
-	</span>
+	<ul class="tags">
+		<li class="tag tag_primary tag_small">
+			{{localize "SHADOWDARK.item.spell_tier"}}
+			{{ item.system.tier }}
+		</li>
+		<li class="tag tag_secondary tag_small">
+			{{localize "SHADOWDARK.item.spell_duration"}}:
+			{{getSpellDuration
+				item.system.duration.type
+				item.system.duration.value
+			}}
+		</li>
+		<li class="tag tag_secondary tag_small">
+			{{localize "SHADOWDARK.item.spell_range"}}:
+			{{fromConfig "SPELL_RANGES" item.system.range }}
+		</li>
+		{{#if item.system.stashed}}
+			<li class="tag tag_secondary tag_small">
+				{{localize 'SHADOWDARK.item.stashed.label'}}
+			</li>
+		{{/if}}
+	</ul>
 </footer>
